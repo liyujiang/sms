@@ -1,0 +1,112 @@
+/*==============================================================*/
+/* DBMS name:      MySQL 5.0                                    */
+/* Created on:     2016/4/4 22:24:42                            */
+/*==============================================================*/
+
+
+drop table if exists Account;
+
+drop table if exists AccountToRole;
+
+drop table if exists Menu;
+
+drop table if exists Permission;
+
+drop table if exists PermissionToResource;
+
+drop table if exists Role;
+
+drop table if exists RoleToPermission;
+
+/*==============================================================*/
+/* Table: Account                                               */
+/*==============================================================*/
+create table Account
+(
+   accountID            bigint not null comment '帐户ID',
+   account              varchar(30) comment '帐户',
+   email                varchar(60) comment '邮箱',
+   mobilePhone          varchar(11) comment '手机',
+   password             varchar(64) comment '密码',
+   salt                 varchar(64) comment '盐',
+   accountLock          varchar(1) comment '帐户锁',
+   primary key (accountID)
+);
+
+alter table Account comment '帐户';
+
+/*==============================================================*/
+/* Table: AccountToRole                                         */
+/*==============================================================*/
+create table AccountToRole
+(
+   accountID            bigint not null,
+   roleID               bigint not null,
+   primary key (accountID, roleID)
+);
+
+alter table AccountToRole comment '帐户与角色';
+
+/*==============================================================*/
+/* Table: Menu                                                  */
+/*==============================================================*/
+create table Menu
+(
+   resourceID           bigint not null comment '资源ID',
+   title                varchar(30) comment '菜单名',
+   URL                  varchar(200),
+   menuOrder            int comment '同级菜单序号',
+   menuDesc             varchar(30) comment '菜单描述',
+   active               varchar(1) comment '是否可用',
+   primary key (resourceID)
+);
+
+alter table Menu comment '菜单';
+
+/*==============================================================*/
+/* Table: Permission                                            */
+/*==============================================================*/
+create table Permission
+(
+   permissionID         bigint not null comment '权限ID',
+   permissionName       varchar(30) comment '权限名称',
+   permissionDesc       varchar(200) comment '权限描述',
+   primary key (permissionID)
+);
+
+alter table Permission comment '权限';
+
+/*==============================================================*/
+/* Table: PermissionToResource                                  */
+/*==============================================================*/
+create table PermissionToResource
+(
+   permissionID         bigint not null,
+   resourceID           bigint not null,
+   primary key (permissionID, resourceID)
+);
+
+/*==============================================================*/
+/* Table: Role                                                  */
+/*==============================================================*/
+create table Role
+(
+   roleID               bigint not null comment '角色ID',
+   roleName             varchar(30) comment '角色名称',
+   roleParentID         bigint comment '父角色',
+   roleDesc             varchar(200) comment '角色描述',
+   primary key (roleID)
+);
+
+alter table Role comment '角色';
+
+/*==============================================================*/
+/* Table: RoleToPermission                                      */
+/*==============================================================*/
+create table RoleToPermission
+(
+   roleID               bigint not null,
+   permissionID         bigint not null,
+   primary key (roleID, permissionID)
+);
+
